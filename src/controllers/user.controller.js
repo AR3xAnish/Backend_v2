@@ -36,7 +36,7 @@ const registerUser = asyncHandler(async(req,res)=>{
     }
 
     //check user if exists
-    const existUser = User.findOne({
+    const existUser = await User.findOne({
         $or:[{ username },{ email }]
     })
     if(existUser){
@@ -48,16 +48,19 @@ const registerUser = asyncHandler(async(req,res)=>{
     const avatarLocalPath=req.files?.avatar[0]?.path;
     const coverImageLocalPath=req.files?.coverImage[0]?.path;
     
+    console.log(req.files);
+    
+
     if(!avatarLocalPath){
         throw new ApiError(400,"Avatar file is required")
     }
 
     //upload them on cloudinary
     const avatar = await uploadOnCloudinary(avatarLocalPath)
-    const coverImage = await uploadOnCloudinary(coverImageLocalPathLocalPath)
+    const coverImage = await uploadOnCloudinary(coverImageLocalPath)
     
     if(!avatar){
-        throw new ApiError(400,"Avatar file is required")
+        throw new ApiError(400,"Cloudinary upload failed")
     }
 
     //create user Object - create entry in db
