@@ -11,11 +11,11 @@ const generateAccessAndRefreshTokens = async(userId)=>{
         const refreshToken = user.generateRefreshToken()
 
         user.refreshToken = refreshToken
-        await user.save({validaeBeforeSave:false})
+        await user.save({validateBeforeSave:false})
 
         return {accessToken,refreshToken}
     } catch (error) {
-        throw new ApiError(500,"Something went Wrong while generation refresh and access token")
+        throw new ApiError(500,"Something went Wrong while generation of refresh and access token")
     }
 }
 
@@ -117,7 +117,7 @@ const loginUser = asyncHandler(async (req,res) => {
     const {email,username,password} = req.body
 
     if (!username || !email) {
-        throw new ApiError(400,"username or password is required")
+        throw new ApiError(400,"username or email is required")
     }
 
     //find user
@@ -140,7 +140,7 @@ const loginUser = asyncHandler(async (req,res) => {
     const {accessToken,refreshToken} = await generateAccessAndRefreshTokens(user._id)
 
     //send in cookies
-    const loggedInUser = await User.findById(user_id).select("-password - refreshToken")
+    const loggedInUser = await User.findById(user._id).select("-password - refreshToken")
 
     //when we send cookies we have to design some options
     const options = {
