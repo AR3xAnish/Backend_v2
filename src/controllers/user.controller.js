@@ -361,7 +361,7 @@ const getUserChannelProfile = asyncHandler(async (req,res) => {
         {
             $lookup:{
                 from:"subscriptions",//mongodb me small and plural
-                localField:"-id",
+                localField:"_id",
                 foreignField:"channel",
                 as:"subscribers"
             }
@@ -370,7 +370,7 @@ const getUserChannelProfile = asyncHandler(async (req,res) => {
         {
             $lookup:{
                 from:"subscriptions",//mongodb me small and plural
-                localField:"-id",
+                localField:"_id",
                 foreignField:"subscriber",
                 as:"subscribedTo"
             }
