@@ -354,7 +354,7 @@ const getUserChannelProfile = asyncHandler(async (req,res) => {
         //stage 1
         {
             $match:{
-                username?.toLowerCase()
+                username:username?.toLowerCase()
             }
         },
         //stage 2
