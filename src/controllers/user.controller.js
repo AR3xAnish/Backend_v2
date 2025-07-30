@@ -167,12 +167,17 @@ const logoutUser = asyncHandler(async(req,res)=>{
     //clear cookies
     //refreshtoken must disappear
     //create a middleware
-    User.findByIdAndUpdate(
+    await User.findByIdAndUpdate(
         await req.user._id,
         {
             $set:{
                 refreshToken:undefined
-            }
+            },
+            // $or
+            // $unset:{
+            //     refreshToken:1//this removves the field from document
+            // }
+            
         },
         {
             new:true
